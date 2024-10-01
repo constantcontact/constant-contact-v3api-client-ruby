@@ -37,5 +37,5 @@ jobs:
         with:
           tag: ${{ steps.tag_version.outputs.tag }}
           name: Release ${{ steps.tag_version.outputs.tag }}
-    - name: Publish
-      uses: rubygems/release-gem@v1
+      - name: Publish
+        uses: rubygems/release-gem@v1
