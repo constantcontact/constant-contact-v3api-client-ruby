@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
 jobs:
-  build:
-    name: Build
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -19,23 +19,30 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
     - run: bundle install
-  release:
-    name: Release
-    needs: build
+  build_and_release:
+    name: Build and Release
+    needs:
+    - validate
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: write
     steps:
-      - name: Create tag from commit
-        uses: christophebedard/tag-version-commit@v1
-        id: tag_version
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          version_regex: '([0-9]+\.[0-9]+\.[0-9]+)'
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.tag_version.outputs.tag }}
-          name: Release ${{ steps.tag_version.outputs.tag }}
-      - name: Publish
-        uses: rubygems/release-gem@v1
+    - uses: actions/checkout@v4
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1
+    - run: bundle install
+    - name: Create tag from commit
+      uses: christophebedard/tag-version-commit@v1
+      id: tag_version
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        version_regex: '([0-9]+\.[0-9]+\.[0-9]+)'
+    - name: Create a GitHub release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ steps.tag_version.outputs.tag }}
+        name: Release ${{ steps.tag_version.outputs.tag }}
+    - name: Publish
+      uses: rubygems/release-gem@v1
