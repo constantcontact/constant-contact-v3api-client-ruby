@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## 1.0.105 - 2024-10-07
+
+## 1.0.103 - 2024-10-07
+
+## 1.0.102 - 2024-10-07
+
+## 1.0.101 - 2024-10-04
+
 ## 1.0.100 - 2024-10-04
 
 ## 1.0.99 - 2024-10-04
